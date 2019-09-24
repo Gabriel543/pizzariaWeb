@@ -18,7 +18,8 @@
 	
 	<%
 		Cliente cli = new Cliente();
-	
+		cli.setNomeCliente("Anderson");
+		out.println(cli.getNomeCliente());
 	%>
 
 </body>
