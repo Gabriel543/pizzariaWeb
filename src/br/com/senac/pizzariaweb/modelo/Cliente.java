@@ -37,4 +37,20 @@ public class Cliente {
 	public void setNomeCliente(String nome) {
 		nomeCliente = nome;
 	}
+	
+	public String getCpfCliente() {
+		return cpfCliente;
+	}
+	
+	public void setCpfCliente(String cpf) {
+		cpfCliente = cpf;
+	}
+	
+	public String getEmailCliente() {
+		return emailCliente;
+	}
+	
+	public void setEmailCliente(String email) {
+		emailCliente = email;
+	}
 }

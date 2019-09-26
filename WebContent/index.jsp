@@ -13,13 +13,17 @@
 	
 	<%
 		// é equivalente ao 'echo' ou 'document.wriet()'
-		out.print("Olá Java Web");
+		out.println("Olá Java Web<br>");
 	%>
 	
 	<%
 		Cliente cli = new Cliente();
 		cli.setNomeCliente("Anderson");
-		out.println(cli.getNomeCliente());
+		out.println(cli.getNomeCliente()+ "<br>");
+		cli.setCpfCliente("23232323");
+		out.println(cli.getCpfCliente()+ "<br>");
+		cli.setEmailCliente("gabriel@gmail.com");
+		out.println(cli.getEmailCliente()+ "<br>");
 	%>
 
 </body>
