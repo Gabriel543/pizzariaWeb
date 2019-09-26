@@ -1,5 +1,7 @@
 package br.com.senac.pizzariaweb.modelo;
 
+
+
 public class Cliente {
 	
 	// atributo da classe cliente
@@ -30,6 +32,14 @@ public class Cliente {
 	
 	// método get - retorna o valor do atributo
 	
+	public Integer getIdCliente() {
+		return idCliente;
+	}
+	
+	public void setIdCliente(int id) {
+		idCliente = id;
+	}
+	
 	public String getNomeCliente() {
 		return nomeCliente;
 	}
@@ -52,5 +62,13 @@ public class Cliente {
 	
 	public void setEmailCliente(String email) {
 		emailCliente = email;
+	}
+	
+	public String getSenhaCliente() {
+		return senhaCliente;
+	}
+	
+	public void setSenhaCliente(String senha) {
+		senhaCliente = senha;
 	}
 }

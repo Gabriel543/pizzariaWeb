@@ -24,6 +24,11 @@
 		out.println(cli.getCpfCliente()+ "<br>");
 		cli.setEmailCliente("gabriel@gmail.com");
 		out.println(cli.getEmailCliente()+ "<br>");
+		cli.setIdCliente(1);
+		out.println(cli.getIdCliente()+ "<br>");
+		cli.setSenhaCliente("1234");
+		out.println(cli.getSenhaCliente()+ "<br>");
+		
 	%>
 
 </body>
