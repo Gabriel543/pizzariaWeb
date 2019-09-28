@@ -1,4 +1,5 @@
 <%@page import="br.com.senac.pizzariaweb.modelo.Cliente"%>
+<%@page import="br.com.senac.pizzariaweb.modelo.Funcionario"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -18,16 +19,12 @@
 	
 	<%
 		Cliente cli = new Cliente();
-		cli.setNomeCliente("Anderson");
-		out.println(cli.getNomeCliente()+ "<br>");
-		cli.setCpfCliente("23232323");
-		out.println(cli.getCpfCliente()+ "<br>");
-		cli.setEmailCliente("gabriel@gmail.com");
-		out.println(cli.getEmailCliente()+ "<br>");
-		cli.setIdCliente(1);
-		out.println(cli.getIdCliente()+ "<br>");
-		cli.setSenhaCliente("1234");
-		out.println(cli.getSenhaCliente()+ "<br>");
+		Funcionario fun = new Funcionario();
+		fun.setId(1);
+		out.println(fun.getId()+ "<br>");
+		cli.setNome("Gabriel");
+		out.println(cli.getNome()+ "<br>");
+		
 		
 	%>
 
