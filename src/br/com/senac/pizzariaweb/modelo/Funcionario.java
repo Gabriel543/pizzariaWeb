@@ -6,11 +6,12 @@ public class Funcionario extends Pessoa{
 	private int matricula;
 	
 	// ctrl + espaço
-	public Funcionario() {
+	public Funcionario(){
+		super();
 	}
 	
-	public Funcionario(double salario,int matricula) {
-		
+	public Funcionario(Integer id, String nome, String cpf,double salario,int matricula) {
+		super(id,nome,cpf);
 		this.salario = salario;
 		this.matricula = matricula;
 	}
@@ -33,12 +34,12 @@ public class Funcionario extends Pessoa{
 		this.matricula = matricula;
 	}
 	
-	// criar a classe pessoa
-	// com os dados comuns das classes cliente e funcionario
-	
-	// refatorar as classes funcionario e cliente sem os dados comuns entre eles
-	
-	// usar o commando extend na assitura das classes cliente e funcionario para gerar a herança
-	
-	// fazer testes de criação dos objetos funcionario e cliente 
+	public static void main(String[] args) {
+		Funcionario fun = new Funcionario(1,"Gabriel","123123",1000,12);
+		System.out.println(fun.getId());
+		System.out.println(fun.getNome());
+		System.out.println(fun.getCpf());
+		System.out.println(fun.getSalario());
+		System.out.println(fun.getMatricula());
+	}
 }
