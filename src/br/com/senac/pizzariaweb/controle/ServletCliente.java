@@ -1,6 +1,8 @@
 package br.com.senac.pizzariaweb.controle;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,9 +23,11 @@ import br.com.senac.pizzariaweb.util.SequenceID;
 
 public class ServletCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;    
+	private List<Cliente> clientes;
 	
     public ServletCliente() {
         super();
+        clientes = new ArrayList<Cliente>();
         
     }
     
@@ -74,14 +78,17 @@ public class ServletCliente extends HttpServlet {
 		c.setCpf(cpf);
 		c.setSenhaCliente(senha);
 		
-		response.getWriter().append("Cliente cadastrado com sucesso!"
-		+ "\nChamada ao método via: " + request.getMethod()
-		+ "\nID: " + c.getId()
-		+ "\nNome: " + c.getNome()
-		+ "\nEmail: " + c.getEmailCliente()
-		+ "\nCPF: " + c.getCpf()
-		+ "\nSenha: " + c.getSenhaCliente()
-		);
+		clientes.add(c);
+		
+		for (Cliente cli : clientes) {
+			response.getWriter().append("Cliente cadastrado com sucesso!\n"
+					+ "Seus dados cadastrais foram:\n"
+					+ "ID: " + cli.getId()
+					+ "\nNome: " + cli.getNome()
+					+ "\nEmail: " + cli.getEmailCliente()
+					+ "\nCPF: " + cli.getCpf()
+					+ "\nSenha: " + cli.getSenhaCliente() + "\n\n");
+		}
 	}
 	
 	protected void remover(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
