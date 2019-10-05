@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.senac.pizzariaweb.modelo.Cliente;
+import br.com.senac.pizzariaweb.modelo.Funcionario;
 import br.com.senac.pizzariaweb.util.SequenceID;
 
 @WebServlet({ "/cliente/adicionar",  // post
@@ -24,11 +25,12 @@ import br.com.senac.pizzariaweb.util.SequenceID;
 public class ServletCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;    
 	private List<Cliente> clientes;
-	
+	private SequenceID sequenceID;
+	 
     public ServletCliente() {
         super();
         clientes = new ArrayList<Cliente>();
-        
+        sequenceID = new SequenceID();
     }
     
     // responder requisição via GET
@@ -92,7 +94,15 @@ public class ServletCliente extends HttpServlet {
 	}
 	
 	protected void remover(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Chamada ao método via: " + request.getMethod());
+		int cont = 0;
+		for (Cliente cli : clientes) {
+			if(Integer.parseInt(request.getParameter("id")) == cli.getId()) {
+				clientes.remove(cont);
+				response.getWriter().append("Funcionario excluído.");
+				break;
+			}
+			cont++;
+		}	
 	}
 	
 	protected void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -104,7 +114,15 @@ public class ServletCliente extends HttpServlet {
 	}
 	
 	protected void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Chamada ao método via: " + request.getMethod());
+		for (Cliente cli : clientes) {
+			response.getWriter().append(
+					"Cliente:<br>"
+					+ "\nID: " + cli.getId()
+					+ "\n<br>Nome: " + cli.getNome()
+					+ "\n<br>Email: " + cli.getEmailCliente()
+					+ "\n<br>CPF: " + cli.getCpf()
+					+ "\n<br>Senha: " + cli.getSenhaCliente() + "<br><br>");
+		}
 	}
 	
 	protected void localizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
