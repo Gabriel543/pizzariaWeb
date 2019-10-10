@@ -1,11 +1,9 @@
 package br.com.senac.pizzariaweb.modelo;
 
-
 // o "start" da herança é dado pela palavra "extends"
 public class Cliente extends Pessoa{
 	
 	// atributo da classe cliente
-
 	private String emailCliente;
 	private String senhaCliente;
 	
@@ -28,7 +26,6 @@ public class Cliente extends Pessoa{
 	// Métodos de encapsulamento
 	
 	// método get - retorna o valor do atributo
-	
 	public String getEmailCliente() {
 		return emailCliente;
 	}
@@ -43,13 +40,5 @@ public class Cliente extends Pessoa{
 	
 	public void setSenhaCliente(String senha) {
 		senhaCliente = senha;
-	}
-	public static void main(String[] args) {
-		Cliente cli = new Cliente(1,"Gabriel","123123","gabriel@gmail","1234");
-		System.out.println(cli.getId());
-		System.out.println(cli.getNome());
-		System.out.println(cli.getCpf());
-		System.out.println(cli.getEmailCliente());
-		System.out.println(cli.getSenhaCliente());
 	}
 }
