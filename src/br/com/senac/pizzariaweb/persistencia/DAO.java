@@ -1,4 +1,4 @@
-package br.com.senac.pizzariaweb.persistencia;
+  package br.com.senac.pizzariaweb.persistencia;
 // FQN - Fully Qualified Name (nome do pacote + nome da classe)
 // D.A.O - Data Access Object'
 

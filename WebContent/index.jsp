@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- Os blocos de código incorporados na página, que nem faziamos no PHP chama-se SCRIPTLET --> 
-	
-
+	<a href="formulario-cliente.jsp">Formulário de Cadastro de Clientes</a><br>
+	<a href="formulario-funcionario.jsp">Formulário de Cadastro de Funcionarios</a>
 </body>
 </html>

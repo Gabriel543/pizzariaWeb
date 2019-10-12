@@ -1,4 +1,3 @@
-  
 package br.com.senac.pizzariaweb.controle;
 
 import java.io.IOException;
@@ -74,10 +73,10 @@ public class ServletCliente extends HttpServlet {
 		 */
 		
 		// TUDO que vem da requisição, vem em formato String
-		String nome = request.getParameter("nome"); // atributo name do input html
-		String email = request.getParameter("email"); // atributo name do input html
-		String cpf = request.getParameter("cpf"); // atributo name do input html
-		String senha = request.getParameter("senha"); // atributo name do input html
+		String nome = request.getParameter("txtNome"); // atributo name do input html
+		String email = request.getParameter("txtEmail"); // atributo name do input html
+		String cpf = request.getParameter("txtCPF"); // atributo name do input html
+		String senha = request.getParameter("txtSenha"); // atributo name do input html
 		
 		Cliente c = new Cliente();
 		
@@ -99,8 +98,17 @@ public class ServletCliente extends HttpServlet {
 //		clientes.add(c);
 		try {
 			dao.gravar(c);
+			response.getWriter().append("Cliente cadastrado com sucesso!<br>"
+			+ "Seus dados cadastrais foram:<br>"
+			+ "ID: " + c.getId()
+			+ "<br>Nome: " + c.getNome()
+			+ "<br>Email: " + c.getEmailCliente()
+			+ "<br>CPF: " + c.getCpf()
+			+ "<br>Senha: " + c.getSenhaCliente() + "<br><br>");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			response.getWriter().append("Falha ao gravar no banco\n");
 		}
 	}
 	
