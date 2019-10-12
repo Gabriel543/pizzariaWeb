@@ -57,7 +57,7 @@ public class ServletFuncionario extends HttpServlet {
 		
 		String nome = request.getParameter("txtNome"); 
 		String salario = request.getParameter("txtSalario"); 
-		String cpf = request.getParameter("txtCPF"); 
+		String cpf = request.getParameter("txtCPF").replace(".", "").replace("-", "");
 		String matricula = request.getParameter("txtMatricula");
 		
 		Funcionario f = new Funcionario();
@@ -68,14 +68,14 @@ public class ServletFuncionario extends HttpServlet {
 		f.setMatricula(Integer.parseInt(matricula));
 		
 		try {
-			dao.gravar(f);
-			response.getWriter().append("Funcionario cadastrado com sucesso!<br>"
-					+ "\nSeus dados cadastrais foram:<br>"
+			f.setId(dao.gravar(f));
+			response.getWriter().append("Funcionario cadastrado com sucesso!"
+					+ "\nSeus dados cadastrais foram:"
 					+ "\nID: " + f.getId()
-					+ "\n<br>Nome: " + f.getNome()
-					+ "\n<br>Matricula: " + f.getMatricula()
-					+ "\n<br>CPF: " + f.getCpf()
-					+ "\n<br>Salario: " + f.getSalario() + "\n\n<br><br>");
+					+ "\nNome: " + f.getNome()
+					+ "\nMatricula: " + f.getMatricula()
+					+ "\nCPF: " + f.getCpf()
+					+ "\nSalario: " + f.getSalario() + "\n\n");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
