@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.senac.pizzariaweb.modelo.Funcionario;
 
@@ -17,14 +19,8 @@ public class FuncionarioDAO extends DAO {
 	}
 	
 	public int gravar(Funcionario c) throws SQLException {
-		try {
-			conn = getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("ERRO AO TENTAR ABRIR A CONEXÃO");
-		}
+		abreConexao();
 		
-
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -55,5 +51,84 @@ public class FuncionarioDAO extends DAO {
 				pstmt.close();
 			}
 		}
+	}
+	
+	private void abreConexao() {
+		try {
+			conn = getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("ERRO AO TENTAR ABRIR A CONEXÃO");
+		}
+	}
+	
+	public List<Funcionario> listar() throws SQLException {
+		abreConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from tb_funcionario");
+			
+			rs = pstmt.executeQuery();
+			System.out.println(pstmt);
+			List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+			
+			while(rs.next()) { // rs.next() - valida se existe um valor e anda o cursor
+				funcionarios.add(criaFuncionario(rs));
+			}
+			
+			return funcionarios;			
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
+	
+	public List<Funcionario> listar(String nome) throws SQLException {
+		abreConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from tb_funcionario where nome like ?");
+			pstmt.setString(1, nome); ;
+			rs = pstmt.executeQuery();
+			System.out.println(pstmt);
+			
+			List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+			
+			while(rs.next()) {
+				funcionarios.add(criaFuncionario(rs));
+			}
+			
+			return funcionarios;			
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
+
+	private Funcionario criaFuncionario(ResultSet rs) throws SQLException {
+		Funcionario f;
+		f = new Funcionario();
+		f.setId(rs.getInt(1));
+		f.setNome(rs.getString(2));
+		f.setCpf(rs.getString(3));
+		f.setSalario(rs.getDouble(4));
+		f.setMatricula(rs.getInt(5));
+		return f;
 	}
 }

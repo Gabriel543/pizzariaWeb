@@ -22,7 +22,7 @@ public class DAO {
 	// serão do pacote java.sql
 	public Connection getConnection() throws SQLException {
 		// mysqli_connection("url_server", "usuario", "senha", "BD");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/pizzariaweb", "root", "T8ADUE3F");
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/pizzariaweb", "root", "");
 		// JDBC - Java Database Connection
 	}
 }

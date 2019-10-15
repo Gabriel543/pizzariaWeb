@@ -84,14 +84,11 @@ public class ServletFuncionario extends HttpServlet {
 	}
 
 	protected void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		for (Funcionario fun : funcionarios) {
-			response.getWriter().append("Funcionario cadastrado com sucesso!<br>"
-				+ "\nSeus dados cadastrais foram:<br>"
-				+ "\nID: " + fun.getId()
-				+ "\n<br>Nome: " + fun.getNome()
-				+ "\n<br>Matricula: " + fun.getMatricula()
-				+ "\n<br>CPF: " + fun.getCpf()
-				+ "\n<br>Salario: " + fun.getSalario() + "\n\n<br><br>");
+		try {
+			request.setAttribute("listaFuncionarios", dao.listar());
+			request.getRequestDispatcher("/lista-funcionario.jsp").forward(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	

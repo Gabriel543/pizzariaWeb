@@ -1,9 +1,12 @@
+  
 package br.com.senac.pizzariaweb.persistencia;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.senac.pizzariaweb.modelo.Cliente;
 
@@ -17,12 +20,7 @@ public class ClienteDAO extends DAO {
 	}
 	
 	public int gravar(Cliente c) throws SQLException {
-		try {
-			conn = getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("ERRO AO TENTAR ABRIR A CONEXÃO");
-		}
+		abreConexao();
 		
 // serve preparar todos parametros da sua query, dentre outras coisas, ele protege contra ataques de SQL Injection
 		
@@ -81,4 +79,84 @@ public class ClienteDAO extends DAO {
 			}
 		}
 	}
+
+	private void abreConexao() {
+		try {
+			conn = getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("ERRO AO TENTAR ABRIR A CONEXÃO");
+		}
+	}
+	
+	public List<Cliente> listar() throws SQLException {
+		abreConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from tb_cliente");
+			
+			rs = pstmt.executeQuery();
+			
+			List<Cliente> clientes = new ArrayList<Cliente>();
+			
+			while(rs.next()) { // rs.next() - valida se existe um valor e anda o cursor
+				// atribui o obj de cliente a lista
+				clientes.add(criaCliente(rs));
+			}
+			
+			return clientes;			
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
+	
+	public List<Cliente> listar(String nome) throws SQLException {
+		abreConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from tb_cliente where nome like ?");
+			pstmt.setString(1, nome); ;
+			rs = pstmt.executeQuery();
+			
+			List<Cliente> clientes = new ArrayList<Cliente>();
+			
+			while(rs.next()) { // rs.next() - valida se existe um valor e anda o cursor
+				// atribui o obj de cliente a lista
+				clientes.add(criaCliente(rs));
+			}
+			
+			return clientes;			
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
+
+	private Cliente criaCliente(ResultSet rs) throws SQLException {
+		Cliente c;
+		c = new Cliente();
+		c.setId(rs.getInt(1));
+		c.setNome(rs.getString(2));
+		c.setCpf(rs.getString(3));
+		c.setEmailCliente(rs.getString(4));
+		return c;
+	}
+	
 }

@@ -17,3 +17,5 @@ create table tb_funcionario(
 	cpf varchar(11) not null,
 	salario double not null
 );
+
+ALTER SCHEMA pizzariaweb DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;

@@ -25,13 +25,10 @@ import br.com.senac.pizzariaweb.util.SequenceID;
 public class ServletCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-//	private List<Cliente> clientes;
-//	private SequenceID sequenceID;
+
 	private ClienteDAO dao;
     public ServletCliente() {
         super();
-//        CLIENTES = NEW ARRAYLIST<CLIENTE>();
-//        SEQUENCEID = NEW SEQUENCEID();
         dao = new ClienteDAO();
     }
 
@@ -119,16 +116,14 @@ public class ServletCliente extends HttpServlet {
 	}
 	
 	protected void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		for (Cliente cli : clientes) { // foreach
-//			
-//			response.getWriter().append(
-//					"Cliente:<br>")
-//					.append("ID: " + cli.getId())
-//					.append("<br>Nome: " + cli.getNome())
-//					.append("<br>Email: " + cli.getEmailCliente())
-//					.append("<br>CPF: " + cli.getCpf())
-//					.append("<br>Senha: " + cli.getSenhaCliente() + "<br><br>");
-//		}
+		try {
+			request.setAttribute("listaClintes", dao.listar()); // os argumentos são (chave, valor);
+			// dispacha a requisição para a página lista-cliente.jsp encaminhando todas as requisições e respostas
+			request.getRequestDispatcher("/lista-cliente.jsp").forward(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	protected void localizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
