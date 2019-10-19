@@ -149,6 +149,104 @@ public class ClienteDAO extends DAO {
 		}
 	}
 
+	public void deletaCliente(int id) throws SQLException{
+		abreConexao();
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = conn.prepareStatement("delete from tb_cliente where id = ?");
+			pstmt.setInt(1,id); // bind
+			
+			int flag = pstmt.executeUpdate();
+			if(flag == 0) {
+				throw new SQLException("Erro ao excluir o cliente: " +id + " do banco!");
+			}
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+
+		}
+	}
+	
+	public int updateCliente(Cliente c) throws SQLException{
+		abreConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		/* try - serve para executar um bloco
+		 * catch - ele executa alguma instrução caso ocorra uma exceção
+		 * finally - ele sempre executa uma instrução indiferente do caso
+		 * 
+		 * try, catch, finally - podemos usar os 3 juntos
+		 * ou somente try e catch
+		 * ou try e finally 
+		 */
+		
+		try {
+			pstmt = conn.prepareStatement("update tb_cliente set nome = ?, cpf = ?, email = ? where id = ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			pstmt.setString(1, c.getNome());
+			pstmt.setString(2, c.getCpf());
+			pstmt.setString(3, c.getEmailCliente());
+			pstmt.setString(4, c.getSenhaCliente());
+			
+			
+			/* 0 - false
+			 * 1 - true
+			 * */
+			int flag = pstmt.executeUpdate();
+			int id;
+			if(flag != 0) {				
+				rs = pstmt.getGeneratedKeys();
+				rs.next();
+				id = rs.getInt(1);
+			}else {
+				throw new SQLException("Erro ao gravar no banco!");
+			}
+			
+			return id;
+		} finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if(pstmt != null) {
+				pstmt.close();
+			}
+		}
+	}
+	
+	public Cliente buscaPeloId(int id) throws SQLException {
+		abreConexao();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from tb_cliente where nome like ?");
+			pstmt.setInt(1, id); ;
+			rs = pstmt.executeQuery();
+			
+			
+			if(rs.next()) {
+
+				return criaCliente(rs);
+			}
+			
+			return null;			
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
+	
 	private Cliente criaCliente(ResultSet rs) throws SQLException {
 		Cliente c;
 		c = new Cliente();
@@ -158,5 +256,7 @@ public class ClienteDAO extends DAO {
 		c.setEmailCliente(rs.getString(4));
 		return c;
 	}
+	
+	
 	
 }

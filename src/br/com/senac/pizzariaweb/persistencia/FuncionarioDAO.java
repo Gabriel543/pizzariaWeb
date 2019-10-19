@@ -121,6 +121,29 @@ public class FuncionarioDAO extends DAO {
 		}
 	}
 
+	
+	public void deletaFuncionario(int id) throws SQLException{
+		abreConexao();
+		PreparedStatement pstmt = null;
+
+		try {
+			pstmt = conn.prepareStatement("delete from tb_funcionario where id = ?");
+			pstmt.setInt(1,id); // bind
+			
+			int flag = pstmt.executeUpdate();
+			if(flag == 0) {
+				throw new SQLException("Erro ao excluir o funcionario: " +id + " do banco!");
+			}
+		}finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+		}
+	}
+	
 	private Funcionario criaFuncionario(ResultSet rs) throws SQLException {
 		Funcionario f;
 		f = new Funcionario();

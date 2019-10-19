@@ -21,6 +21,7 @@
 	  				<th>Nome</th>
 	  				<th>CPF</th>
 	  				<th>E-mail</th>
+	  				<th colspan="2">Gerenciar</th>
   				</tr>
   			</thead>
   			<tbody>
@@ -31,6 +32,8 @@
 		  				<td>${cliente.nome}</td>
 		  				<td>${cliente.cpf}</td>
 		  				<td>${cliente.emailCliente}</td>
+		  				<td><a herf="remover?id=${cliente.id}">Editar</a></td>
+		  				<td><a herf="remover?id=${cliente.id}">Excluir</a></td>
 	  				</tr>
 	  			</c:forEach>
   			</tbody>

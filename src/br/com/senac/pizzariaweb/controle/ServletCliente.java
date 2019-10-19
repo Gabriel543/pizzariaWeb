@@ -102,9 +102,14 @@ public class ServletCliente extends HttpServlet {
 	}
 	
 	protected void remover(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		IF(CLIENTES.REMOVE(INTEGER.PARSEINT(REQUEST.GETPARAMETER("ID")) - 1) != NULL) {
-//			RESPONSE.GETWRITER().APPEND("CLIENTE EXCLUÍDO.");			
-//		}	
+		int id = Integer.parseInt(request.getParameter("id"));
+		try {
+			dao.deletaCliente(id);
+			response.sendRedirect("/cliente/listar");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.getWriter().append("Falha ao excluir no banco\n");
+		}
 	}
 	
 	protected void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
