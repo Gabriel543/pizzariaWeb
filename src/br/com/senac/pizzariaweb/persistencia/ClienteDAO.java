@@ -149,65 +149,45 @@ public class ClienteDAO extends DAO {
 		}
 	}
 
-	public void deletaCliente(int id) throws SQLException{
-		abreConexao();
+	public void deletaCliente(int id) throws SQLException {
+		abreConexao();	
 		PreparedStatement pstmt = null;
-
 		try {
 			pstmt = conn.prepareStatement("delete from tb_cliente where id = ?");
-			pstmt.setInt(1,id); // bind
+			pstmt.setInt(1, id); // bind
 			
 			int flag = pstmt.executeUpdate();
+			
 			if(flag == 0) {
-				throw new SQLException("Erro ao excluir o cliente: " +id + " do banco!");
+				throw new SQLException("Erro ao excluir o cliente: " + id + " do banco!");
 			}
-		}finally {
+		} finally {
 			if(conn != null) {
 				conn.close();
 			}
-			if (pstmt != null) {
+			if(pstmt != null) {
 				pstmt.close();
 			}
-
 		}
 	}
 	
-	public int updateCliente(Cliente c) throws SQLException{
+	public void editarCliente(Cliente c) throws SQLException {
 		abreConexao();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		/* try - serve para executar um bloco
-		 * catch - ele executa alguma instrução caso ocorra uma exceção
-		 * finally - ele sempre executa uma instrução indiferente do caso
-		 * 
-		 * try, catch, finally - podemos usar os 3 juntos
-		 * ou somente try e catch
-		 * ou try e finally 
-		 */
-		
+		PreparedStatement pstmt = null;	
 		try {
-			pstmt = conn.prepareStatement("update tb_cliente set nome = ?, cpf = ?, email = ? where id = ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = conn.prepareStatement("update tb_cliente set nome = ?, cpf = ?, email = ? where id = ?");
 			
 			pstmt.setString(1, c.getNome());
 			pstmt.setString(2, c.getCpf());
 			pstmt.setString(3, c.getEmailCliente());
-			pstmt.setString(4, c.getSenhaCliente());
+			pstmt.setInt(4, c.getId());
 			
-			
-			/* 0 - false
-			 * 1 - true
-			 * */
 			int flag = pstmt.executeUpdate();
-			int id;
-			if(flag != 0) {				
-				rs = pstmt.getGeneratedKeys();
-				rs.next();
-				id = rs.getInt(1);
-			}else {
-				throw new SQLException("Erro ao gravar no banco!");
+			
+			if(flag == 0) {				
+				throw new SQLException("Erro ao atualizar o cliente: " + c.getId() + " no banco!");
 			}
 			
-			return id;
 		} finally {
 			if(conn != null) {
 				conn.close();
@@ -224,7 +204,7 @@ public class ClienteDAO extends DAO {
 		ResultSet rs = null;
 		try {
 			pstmt = conn.prepareStatement("select * from tb_cliente where nome like ?");
-			pstmt.setInt(1, id); ;
+			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
 			
 			
