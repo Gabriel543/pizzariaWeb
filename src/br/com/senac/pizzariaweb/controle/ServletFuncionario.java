@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.senac.pizzariaweb.modelo.Cliente;
 import br.com.senac.pizzariaweb.modelo.Funcionario;
 import br.com.senac.pizzariaweb.persistencia.FuncionarioDAO;
 import br.com.senac.pizzariaweb.util.SequenceID;
@@ -93,27 +94,42 @@ public class ServletFuncionario extends HttpServlet {
 	}
 	
 	protected void excluir(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int cont = 0;
-		for (Funcionario fun : funcionarios) {
-			if(Integer.parseInt(request.getParameter("id")) == fun.getId()) {
-				funcionarios.remove(cont);
-				response.getWriter().append("Funcionario excluído.");
-				break;
-			}
-			cont++;
-		}		
+		int id = Integer.parseInt(request.getParameter("id"));
+		try {
+			dao.deletaFuncionario(id);
+			response.sendRedirect("listar");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.getWriter().append("Falha ao excluir no banco\n");
+		}
 	}
 	
 	protected void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Chamada ao método via: " + request.getMethod());
-	}
-	
-	protected void localizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Chamada ao método via: " + request.getMethod());
+		int id = Integer.valueOf(request.getParameter("id"));
+		try {
+			request.setAttribute("funcionario", dao.buscaPeloId(id));
+			request.getRequestDispatcher("/formulario-edit-funcionario.jsp").forward(request,response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendRedirect("pagina-erro.jsp?msg=eero_localizar");
+		}
 	}
 	
 	protected void atualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Chamada ao método via: " + request.getMethod());
+		int id = Integer.valueOf(request.getParameter("txtId"));
+		String nome = request.getParameter("txtNome");
+		String cpf = request.getParameter("txtCPF");
+		double salario = Double.valueOf(request.getParameter("txtSalario").replace(",", "").replace("", "."));
+		try {
+			dao.editarFuncionario(new Funcionario(id, nome, cpf,salario,0));
+			listar(request,response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendRedirect("pagina-erro.jsp?msg=eero_localizar");
+		}
 	}
-
+	protected void localizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			response.getWriter().append("Chamada ao método via: " + request.getMethod());
+		}
+	
 }

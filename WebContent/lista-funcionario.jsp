@@ -33,6 +33,8 @@
 		  				<td>${funcionario.cpf}</td>
 		  				<td>${funcionario.salario}</td>
 		  				<td>${funcionario.matricula}</td>
+		  				<td><a href="editar?id=${funcionario.id}">Editar</a></td>
+		  				<td><a href="excluir?id=${funcionario.id}">Excluir</a></td>
 	  				</tr>
 	  			</c:forEach>
   			</tbody>

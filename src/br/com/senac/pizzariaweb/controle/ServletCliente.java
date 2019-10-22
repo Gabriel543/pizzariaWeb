@@ -105,7 +105,7 @@ public class ServletCliente extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		try {
 			dao.deletaCliente(id);
-			response.sendRedirect("/cliente/listar");
+			response.sendRedirect("listar");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.getWriter().append("Falha ao excluir no banco\n");
@@ -113,11 +113,30 @@ public class ServletCliente extends HttpServlet {
 	}
 	
 	protected void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("chamada ao método editar via " + request.getMethod());
+		int id = Integer.valueOf(request.getParameter("id"));
+		try {
+			request.setAttribute("cliente", dao.buscaPeloId(id));
+			request.getRequestDispatcher("/formulario-edit-cliente.jsp").forward(request,response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendRedirect("pagina-erro.jsp?msg=eero_localizar");
+		}
+		
 	}
 	
 	protected void atualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("chamada ao método atualizar via " + request.getMethod());
+		int id = Integer.valueOf(request.getParameter("txtId"));
+		String nome = request.getParameter("txtNome");
+		String cpf = request.getParameter("txtCPF");
+		String email = request.getParameter("txtEmail");
+		
+		try {
+			dao.editarCliente(new Cliente(id,nome,cpf,email,null));
+			listar(request,response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.sendRedirect("pagina-erro.jsp?msg=eero_localizar");
+		}
 	}
 	
 	protected void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

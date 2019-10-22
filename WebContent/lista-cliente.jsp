@@ -25,14 +25,15 @@
   				</tr>
   			</thead>
   			<tbody>
+  				<!-- Tag responsavel por fazer repetições no HTML c:foreach -->
   				<c:forEach items="${listaClintes}" var="cliente">
 	  				<tr>
 		  				<td>${cliente.id}</td>
-						<td>${cliente.nome}</td>
-						<td>${cliente.cpf}</td>
-						<td>${cliente.emailCliente}</td>
-						<td><a href="editar?id=${cliente.id}">Editar</a></td>
-						<td><a href="remover?id=${cliente.id}">Excluir</a></td>
+		  				<td>${cliente.nome}</td>
+		  				<td>${cliente.cpf}</td>
+		  				<td>${cliente.emailCliente}</td>
+		  				<td><a href="editar?id=${cliente.id}">Editar</a></td>
+		  				<td><a href="remover?id=${cliente.id}">Excluir</a></td>
 	  				</tr>
 	  			</c:forEach>
   			</tbody>

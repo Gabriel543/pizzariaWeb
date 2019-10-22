@@ -199,29 +199,31 @@ public class ClienteDAO extends DAO {
 	}
 	
 	public Cliente buscaPeloId(int id) throws SQLException {
+		
 		abreConexao();
+		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
 		try {
-			pstmt = conn.prepareStatement("select * from tb_cliente where nome like ?");
-			pstmt.setInt(1, id);
+			pstmt = conn.prepareStatement("select * from tb_cliente where id = ?");
+			pstmt.setInt(1, id); // bind
+			
 			rs = pstmt.executeQuery();
 			
-			
 			if(rs.next()) {
-
 				return criaCliente(rs);
 			}
 			
-			return null;			
-		}finally {
+			return null;
+		} finally {
 			if(conn != null) {
 				conn.close();
 			}
-			if (pstmt != null) {
+			if(pstmt != null) {
 				pstmt.close();
 			}
-			if (rs != null) {
+			if(rs != null) {
 				rs.close();
 			}
 		}

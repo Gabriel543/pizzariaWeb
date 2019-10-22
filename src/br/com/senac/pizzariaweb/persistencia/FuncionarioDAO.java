@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import br.com.senac.pizzariaweb.modelo.Funcionario;
 
 // classe responsável por fazer as transações com o banco de dados
@@ -121,24 +122,81 @@ public class FuncionarioDAO extends DAO {
 		}
 	}
 
-	
-	public void deletaFuncionario(int id) throws SQLException{
+	public Funcionario buscaPeloId(int id) throws SQLException {
+		
 		abreConexao();
+		
 		PreparedStatement pstmt = null;
-
+		ResultSet rs = null;
+		
 		try {
-			pstmt = conn.prepareStatement("delete from tb_funcionario where id = ?");
-			pstmt.setInt(1,id); // bind
+			pstmt = conn.prepareStatement("select * from tb_funcionario where id = ?");
+			pstmt.setInt(1, id); // bind
 			
-			int flag = pstmt.executeUpdate();
-			if(flag == 0) {
-				throw new SQLException("Erro ao excluir o funcionario: " +id + " do banco!");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				return criaFuncionario(rs);
 			}
-		}finally {
+			
+			return null;
+		} finally {
 			if(conn != null) {
 				conn.close();
 			}
-			if (pstmt != null) {
+			if(pstmt != null) {
+				pstmt.close();
+			}
+			if(rs != null) {
+				rs.close();
+			}
+		}
+	}
+	
+	public void deletaFuncionario(int id) throws SQLException{
+		abreConexao();	
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement("delete from tb_funcionario where id = ?");
+			pstmt.setInt(1, id); // bind
+			
+			int flag = pstmt.executeUpdate();
+			
+			if(flag == 0) {
+				throw new SQLException("Erro ao excluir o funcionario: " + id + " do banco!");
+			}
+		} finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if(pstmt != null) {
+				pstmt.close();
+			}
+		}
+	}
+	
+	public void editarFuncionario(Funcionario f) throws SQLException {
+		abreConexao();
+		PreparedStatement pstmt = null;	
+		try {
+			pstmt = conn.prepareStatement("update tb_funcionario set nome = ?, cpf = ?, salario = ? where id = ?");
+			
+			pstmt.setString(1, f.getNome());
+			pstmt.setString(2, f.getCpf());
+			pstmt.setDouble(3, f.getSalario());
+			pstmt.setInt(4, f.getId());
+			
+			int flag = pstmt.executeUpdate();
+			
+			if(flag == 0) {				
+				throw new SQLException("Erro ao atualizar o cliente: " + f.getId() + " no banco!");
+			}
+			
+		} finally {
+			if(conn != null) {
+				conn.close();
+			}
+			if(pstmt != null) {
 				pstmt.close();
 			}
 		}
